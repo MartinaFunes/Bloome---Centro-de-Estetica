@@ -1,9 +1,9 @@
 /** Componentes reutilizables de la web: íconos, logo y presentación/detalle de los tratamientos. */
 
-import type { ReactNode } from "react"
+import { useEffect, useRef, useState, type ImgHTMLAttributes, type ReactNode } from "react"
 import logoWhite from "../assets/main/bloome-logo.png"
 import {
-  WHATSAPP_NUMBER,
+  WHATSAPP_NUMBER, BOOKING_URL, TREATMENT_CATEGORIES,
   FACIAL_TREATMENTS, BODY_TREATMENTS, BROW_TREATMENTS, LASER_TREATMENTS, NAIL_TREATMENTS,
   type Treatment, type TreatmentImage,
 } from "../data/treatments"
@@ -11,7 +11,7 @@ import {
 // Ícono de flecha reutilizable para enlaces y llamadas a la acción.
 export function ArrowIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" className="arrow-icon size-4 shrink-0" aria-hidden="true">
       <path
         d="M3 10h14m-5-5 5 5-5 5"
         stroke="currentColor"
@@ -38,6 +38,38 @@ export const SERVICE_HASHES: Record<NavigableService, string> = {
   nails: "#unas",
 }
 
+// Imagen que aparece con un fundido suave cuando termina de cargar.
+export function FadeImage({ className = "", ...props }: ImgHTMLAttributes<HTMLImageElement>) {
+  const ref = useRef<HTMLImageElement>(null)
+  const [loaded, setLoaded] = useState(false)
+
+  // Si la imagen ya estaba en caché, se marca como cargada al montar.
+  useEffect(() => {
+    if (ref.current?.complete) setLoaded(true)
+  }, [])
+
+  return (
+    <img
+      ref={ref}
+      loading="lazy"
+      decoding="async"
+      {...props}
+      onLoad={() => setLoaded(true)}
+      className={`fade-img ${loaded ? "is-loaded" : ""} ${className}`}
+    />
+  )
+}
+
+// Convierte un título en un id apto para anclas (ej: "HIGIENE FACIAL" → "higiene-facial").
+export function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+}
+
 // Reserva un espacio accesible cuando una categoría no tiene imagen disponible.
 export function PhotoPlaceholder({ label }: { label: string }) {
   return (
@@ -58,10 +90,10 @@ export function TreatmentGallery({ images }: { images: TreatmentImage[] }) {
   }
   return (
     <div className="aspect-square h-full min-h-0 w-full overflow-hidden bg-sage-cream" aria-label="Fotografía del tratamiento">
-      <img
+      <FadeImage
         src={image.src}
         alt={image.alt}
-        className="block h-full min-h-0 w-full object-cover"
+        className="block h-full min-h-0 w-full object-cover transition-transform duration-700 group-hover/card:scale-[1.03]"
       />
     </div>
   )
@@ -76,21 +108,23 @@ export function BookingLink({ service }: { service: string }) {
       )}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="mt-7 inline-flex items-center gap-2 rounded-full border border-teal-soft bg-teal-soft px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-off-white transition-colors hover:bg-off-white hover:text-teal-deep"
+      className="btn-primary mt-7"
     >
-      Coordinar turno <ArrowIcon />
+      Reservar este tratamiento <ArrowIcon />
     </a>
   )
 }
 
 // Plantilla común de ficha: imagen, título, contenido y enlace para reservar.
 export function EditorialService({
+  id,
   title,
   index,
   children,
   visual,
   uppercaseTitle = true,
 }: {
+  id?: string
   title: string
   index: number
   children: ReactNode
@@ -98,8 +132,7 @@ export function EditorialService({
   uppercaseTitle?: boolean
 }) {
   return (
-
-<article className="grid overflow-hidden rounded-[2rem] border border-teal-soft/10 bg-off-white shadow-lg shadow-teal-deep/5 lg:grid-cols-2">
+    <article id={id} className="group/card scroll-mt-12 grid overflow-hidden rounded-[2rem] border border-teal-soft/10 bg-off-white shadow-lg shadow-teal-deep/5 transition-shadow duration-500 hover:shadow-2xl hover:shadow-teal-deep/10 lg:grid-cols-2">
       <div
         className={`h-72 overflow-hidden border-teal-soft/10 ${
           index % 2 === 1 ? "lg:order-2 lg:border-l" : "lg:border-r"
@@ -109,7 +142,7 @@ export function EditorialService({
       </div>
       <div className={`p-7 md:p-9 ${index % 2 === 1 ? "lg:order-1" : ""}`}>
         <h4
-          className={`font-serif text-2xl font-semibold leading-tight text-teal-deep md:text-3xl ${
+          className={`font-serif text-2xl font-semibold leading-tight text-teal-deep md:text-[1.625rem] ${
             uppercaseTitle ? "uppercase" : ""
           }`}
         >
@@ -151,6 +184,7 @@ export function TreatmentCollection({
       {treatments.map((treatment, index) => (
         <EditorialService
           key={treatment.title}
+          id={slugify(treatment.title)}
           title={treatment.title}
           index={index}
           uppercaseTitle={false}
@@ -186,7 +220,7 @@ export function TreatmentCollection({
               .filter((item): item is [string, string] => Boolean(item[1]))
               .map(([label, value]) => (
                 <div key={label} className="bg-white p-4">
-                  <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-teal-soft">
+                  <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-teal-soft">
                     {label}
                   </dt>
                   <dd className="mt-1 text-sm font-medium leading-5 text-teal-deep">
@@ -201,13 +235,24 @@ export function TreatmentCollection({
   )
 }
 
+// Relaciona cada categoría con su colección de fichas.
+const TREATMENTS_BY_CATEGORY: Record<NavigableService, Treatment[]> = {
+  facials: FACIAL_TREATMENTS,
+  body: BODY_TREATMENTS,
+  brows: BROW_TREATMENTS,
+  laser: LASER_TREATMENTS,
+  nails: NAIL_TREATMENTS,
+}
+
 // Elige y muestra la colección de tratamientos de la categoría activa.
 export function ServiceDetails({
   category,
   onBack,
+  onOpenCategory,
 }: {
   category: ExpandableService
   onBack: () => void
+  onOpenCategory: (category: NavigableService) => void
 }) {
   // Traduce los identificadores internos a títulos legibles para la página.
   const titles: Record<ExpandableService, string> = {
@@ -217,6 +262,20 @@ export function ServiceDetails({
     laser: "Depilación Definitiva",
     kinesiology: "Kinesiología y Fisioterapia",
     nails: "Uñas",
+  }
+
+  const treatments =
+    category !== "kinesiology" ? TREATMENTS_BY_CATEGORY[category] : []
+  const categoryInfo = TREATMENT_CATEGORIES.find(({ id }) => id === category)
+  const otherCategories = TREATMENT_CATEGORIES.filter(
+    ({ id }) => id !== category && id in TREATMENTS_BY_CATEGORY,
+  )
+
+  // Desplaza hasta una ficha sin cambiar el hash (así no se cierra el detalle).
+  const scrollToTreatment = (title: string) => {
+    document
+      .getElementById(slugify(title))
+      ?.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
   // Asigna un id de ancla cuando la categoría dispone de una ruta navegable.
@@ -229,33 +288,92 @@ export function ServiceDetails({
       }
       className="service-reveal"
     >
-      <div className="mb-10 border-b border-teal-soft/15 pb-8">
-        <button
-          type="button"
-          onClick={onBack}
-          className="mb-5 text-xs font-semibold uppercase tracking-[0.14em] text-teal-soft transition-colors hover:text-teal-deep"
-        >
-          ← Volver a tratamientos
-        </button>
-        <h3 className="font-serif text-3xl font-semibold uppercase tracking-[0.04em] text-teal-deep md:text-5xl">
+      {/* Encabezado: migas de pan, título, descripción y cantidad de opciones. */}
+      <div className="mb-6 border-b border-teal-soft/15 pb-8">
+        <nav aria-label="Ruta de navegación" className="mb-5">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-2 rounded-full border border-teal-soft/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-teal-soft transition-colors hover:border-teal-soft hover:bg-teal-soft hover:text-off-white"
+          >
+            <span aria-hidden="true">←</span> Volver a tratamientos
+          </button>
+        </nav>
+        <h3 className="font-serif text-3xl font-semibold uppercase tracking-[0.04em] text-teal-deep md:text-4xl">
           {titles[category]}
         </h3>
+        {categoryInfo && (
+          <p className="mt-4 max-w-2xl text-lg leading-7 text-ink-muted">
+            {categoryInfo.description}
+          </p>
+        )}
+        {treatments.length > 1 && (
+          <p className="mt-3 text-sm font-medium text-teal-soft">
+            {treatments.length} opciones disponibles
+          </p>
+        )}
       </div>
-      {category === "facials" && (
-        <TreatmentCollection treatments={FACIAL_TREATMENTS} />
+
+      {/* Índice fijo: permite saltar directo a cada tratamiento de la categoría. */}
+      {treatments.length > 1 && (
+        <div className="sticky top-[3.75rem] z-30 lg:top-14 -mx-6 mb-10 border-b border-teal-soft/10 bg-white/95 px-6 py-3 backdrop-blur-md">
+          <div className="no-scrollbar flex gap-2 overflow-x-auto" role="list" aria-label="Ir a un tratamiento">
+            {treatments.map((treatment) => (
+              <button
+                key={treatment.title}
+                type="button"
+                role="listitem"
+                onClick={() => scrollToTreatment(treatment.title)}
+                className="shrink-0 whitespace-nowrap rounded-full border border-teal-soft/25 bg-off-white px-4 py-2 text-xs font-semibold capitalize text-teal-deep transition-colors hover:border-teal-soft hover:bg-teal-soft hover:text-off-white"
+              >
+                {treatment.title.toLowerCase()}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
-      {category === "body" && (
-        <TreatmentCollection treatments={BODY_TREATMENTS} />
-      )}
-      {category === "brows" && (
-        <TreatmentCollection treatments={BROW_TREATMENTS} />
-      )}
-      {category === "laser" && (
-        <TreatmentCollection treatments={LASER_TREATMENTS} />
-      )}
-      {category === "nails" && (
-        <TreatmentCollection treatments={NAIL_TREATMENTS} />
-      )}
+
+      <TreatmentCollection treatments={treatments} />
+
+      {/* Cierre: ayuda para elegir y acceso al resto de las categorías. */}
+      <div className="mt-16 rounded-[2rem] bg-teal-deep p-8 text-off-white md:p-12">
+        <div className="grid gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
+          <div>
+            <h4 className="font-serif text-2xl font-medium leading-tight md:text-3xl">
+              ¿No sabés cuál elegir?
+            </h4>
+            <p className="mt-3 max-w-lg text-base leading-7 text-off-white/80">
+              Escribinos y te ayudamos a encontrar el tratamiento ideal según tu
+              piel y tus objetivos.
+            </p>
+            <a
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-light mt-6"
+            >
+              Consultar por WhatsApp <ArrowIcon />
+            </a>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-sage-light">
+              Otras categorías
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {otherCategories.map((other) => (
+                <button
+                  key={other.id}
+                  type="button"
+                  onClick={() => onOpenCategory(other.id as NavigableService)}
+                  className="rounded-full border border-off-white/30 px-4 py-2 text-sm text-off-white transition-colors hover:bg-off-white hover:text-teal-deep"
+                >
+                  {other.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -263,9 +381,9 @@ export function ServiceDetails({
 // Muestra el logotipo reutilizable de BLOOME.
 export function Logo() {
   return (
-    <div className="grid w-44" aria-label="BLOOME, Centro de estética">
-      <div className="block h-auto w-40 object-contain" aria-hidden="true">
-        <img src={logoWhite} alt="" className="w-[210px] max-w-none" />
+    <div className="grid w-32 sm:w-36" aria-label="BLOOME, Centro de estética">
+      <div className="block h-auto w-full object-contain" aria-hidden="true">
+        <img src={logoWhite} alt="" className="block w-full" />
       </div>
     </div>
   )

@@ -1,0 +1,25 @@
+/* Estilos compartidos de las páginas estáticas (404 y privacidad). */
+@font-face { font-family: "Playfair"; src: url("/fonts/playfair.woff2") format("woff2"); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: "Raleway"; src: url("/fonts/raleway.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --teal-deep:#0b4648; --teal-soft:#007a73; --sage-light:#e4edcf; --off-white:#fffaf3; --ink:#173638; --ink-muted:#456568; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: "Raleway", system-ui, sans-serif; color: var(--ink); background: var(--off-white); line-height: 1.7; }
+a { color: var(--teal-soft); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--teal-soft); outline-offset: 3px; border-radius: 6px; }
+.bar { background: var(--teal-deep); padding: 18px 24px; }
+.bar a { display: inline-block; }
+.bar img { height: 40px; width: auto; display: block; }
+.btn { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 26px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: background .2s, color .2s; }
+.btn-primary { background: var(--teal-soft); color: #fff; }
+.btn-primary:hover { background: var(--teal-deep); }
+.btn-ghost { border: 1px solid color-mix(in srgb, var(--teal-soft) 40%, transparent); color: var(--teal-deep); }
+.btn-ghost:hover { background: var(--teal-deep); color: var(--off-white); }
+h1, h2 { font-family: "Playfair", Georgia, serif; color: var(--teal-deep); font-weight: 500; letter-spacing: -0.02em; }
+.foot { background: var(--teal-deep); color: color-mix(in srgb, var(--off-white) 75%, transparent); padding: 28px 24px; font-size: 14px; text-align: center; }
+.foot a { color: var(--off-white); }
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .8s cubic-bezier(.22,1,.36,1) both; }
+  .rise-2 { animation-delay: .12s; } .rise-3 { animation-delay: .24s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+}

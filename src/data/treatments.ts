@@ -3,33 +3,33 @@
 // Datos, textos e imágenes de las secciones públicas del sitio.
 
 // Imágenes principales que ilustran cada categoría en la página de tratamientos.
-import tratamientoCejas from "../assets/tratamiento-main/tratamiento-cejas.png"
-import tratamientoCorporal from "../assets/tratamiento-main/tratamiento-corporal.png"
-import tratamientoDepilacion from "../assets/tratamiento-main/tratamiento-depilacion.png"
-import tratamientoUnas from "../assets/tratamiento-main/tratamiento-uñas.png"
-import tratamientoFacial from "../assets/tratamiento-main/tratamiento-facial.png"
+import tratamientoCejas from "../assets/tratamiento-main/tratamiento-cejas.webp"
+import tratamientoCorporal from "../assets/tratamiento-main/tratamiento-corporal.webp"
+import tratamientoDepilacion from "../assets/tratamiento-main/tratamiento-depilacion.webp"
+import tratamientoUnas from "../assets/tratamiento-main/tratamiento-uñas.webp"
+import tratamientoFacial from "../assets/tratamiento-main/tratamiento-facial.webp"
 
 // Fotografías individuales utilizadas en las fichas detalladas de cada tratamiento.
-import cejasDiseño from "../assets/detalle-tratamiento/cejas-diseño.png"
-import cejasLaminado from "../assets/detalle-tratamiento/cejas-laminado.png"
-import cejasLifting from "../assets/detalle-tratamiento/cejas-lifting.png"
-import corporalAlpha from "../assets/detalle-tratamiento/corporal-alpha.png"
-import corporalBioRoll from "../assets/detalle-tratamiento/corporal-bioroll.png"
-import corporalElectro from "../assets/detalle-tratamiento/corporal-electro.png"
-import corporalKine from "../assets/detalle-tratamiento/corporal-kine.png"
-import corporalMioUp from "../assets/detalle-tratamiento/corporal-mioup.png"
-import depilacionCrystal from "../assets/detalle-tratamiento/depilacion-crystal.png"
-import facialAlpha from "../assets/detalle-tratamiento/facial-alpha.png"
-import facialDerma from "../assets/detalle-tratamiento/facial-derma.png"
-import facialElectro from "../assets/detalle-tratamiento/facial-electro.png"
-import facialFraxface from "../assets/detalle-tratamiento/facial-fraxface.png"
-import facialHigiene from "../assets/detalle-tratamiento/facial-higiene.png"
-import facialMicro from "../assets/detalle-tratamiento/facial-micro.png"
-import facialPeeling from "../assets/detalle-tratamiento/facial-peeling.png"
-import unasKapping from "../assets/detalle-tratamiento/uñas-kapping.png"
-import unasPies from "../assets/detalle-tratamiento/uñas-pies.png"
-import unasSemi from "../assets/detalle-tratamiento/uñas-semi.png"
-import unasSoft from "../assets/detalle-tratamiento/uñas-soft.png"
+import cejasDiseño from "../assets/detalle-tratamiento/cejas-diseño.webp"
+import cejasLaminado from "../assets/detalle-tratamiento/cejas-laminado.webp"
+import cejasLifting from "../assets/detalle-tratamiento/cejas-lifting.webp"
+import corporalAlpha from "../assets/detalle-tratamiento/corporal-alpha.webp"
+import corporalBioRoll from "../assets/detalle-tratamiento/corporal-bioroll.webp"
+import corporalElectro from "../assets/detalle-tratamiento/corporal-electro.webp"
+import corporalKine from "../assets/detalle-tratamiento/corporal-kine.webp"
+import corporalMioUp from "../assets/detalle-tratamiento/corporal-mioup.webp"
+import depilacionCrystal from "../assets/detalle-tratamiento/depilacion-crystal.webp"
+import facialAlpha from "../assets/detalle-tratamiento/facial-alpha.webp"
+import facialDerma from "../assets/detalle-tratamiento/facial-derma.webp"
+import facialElectro from "../assets/detalle-tratamiento/facial-electro.webp"
+import facialFraxface from "../assets/detalle-tratamiento/facial-fraxface.webp"
+import facialHigiene from "../assets/detalle-tratamiento/facial-higiene.webp"
+import facialMicro from "../assets/detalle-tratamiento/facial-micro.webp"
+import facialPeeling from "../assets/detalle-tratamiento/facial-peeling.webp"
+import unasKapping from "../assets/detalle-tratamiento/uñas-kapping.webp"
+import unasPies from "../assets/detalle-tratamiento/uñas-pies.webp"
+import unasSemi from "../assets/detalle-tratamiento/uñas-semi.webp"
+import unasSoft from "../assets/detalle-tratamiento/uñas-soft.webp"
 
 
 
@@ -76,7 +76,8 @@ export const BOOKING_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Hola%20BLOOME%
 // Texto y destino de cada enlace del menú principal.
 export const NAV_LINKS = [
   { label: "Inicio", href: "#inicio" },
-  { label: "Nosotros", href: "#nosotros" },
+  // "Nosotros" abre la página propia "Quiénes somos".
+  { label: "Nosotros", href: "#quienes-somos" },
   { label: "Tratamientos", href: "#tratamientos" },
   { label: "Imperdibles", href: "#imperdibles" },
   { label: "Contacto", href: "#contacto" },
@@ -91,7 +92,7 @@ export const TREATMENT_CATEGORIES = [
     img: facialCategoryImage,
     alt: "Aplicación de tratamiento facial con equipo de radiofrecuencia.",
     description:
-      "Devolvéle a tu piel su salud y luminosidad, con tratamientos que realzan tu vitalidad.",
+      "Devolvele a tu piel su salud y luminosidad, con tratamientos que realzan tu vitalidad.",
     services: ["Higiene facial", "Peeling", "Microneedling", "Fraxface"],
   },
   {
@@ -490,19 +491,19 @@ export const NAIL_TREATMENTS: Treatment[]  = [
 export const PILLARS = [
   {
     title: "Personalización",
-    desc: "Equilibrio entre bienestar, cuidado y belleza natural.",
+    desc: "Tratamientos personalizados que respetan tu singularidad.",
   },
   {
     title: "Bienestar",
-    desc: "Una experiencia pensada para reconectar con tu mejor versión.",
+    desc: "Equilibrio entre bienestar, cuidado y belleza natural, para reconectar con tu mejor versión.",
   },
   {
     title: "Profesionalismo",
-    desc: "Técnicas y servicios que evolucionan para cuidarte mejor.",
+    desc: "Profesionales que te asesoran y acompañan en cada sesión.",
   },
   {
     title: "Innovación",
-    desc: "Tratamientos personalizados que respetan tu singularidad.",
+    desc: "Técnicas y aparatología que evolucionan para cuidarte mejor.",
   },
 ]
 

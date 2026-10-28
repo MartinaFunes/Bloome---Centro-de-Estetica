@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0b4648" />
+  <title>Página no encontrada | BLOOME</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="/static-page.css" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    main { flex: 1; display: grid; place-items: center; padding: 64px 24px; text-align: center;
+      background: radial-gradient(ellipse at 20% 20%, color-mix(in srgb, var(--sage-light) 70%, transparent), transparent 55%), var(--off-white); }
+    .code { font-family: "Playfair", Georgia, serif; font-style: italic; font-size: clamp(88px, 18vw, 160px); line-height: 1; color: var(--teal-soft); opacity: .9; margin: 0; }
+    h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.15; margin: 18px 0 12px; }
+    p.lead { color: var(--ink-muted); font-size: 18px; max-width: 460px; margin: 0 auto 32px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .leaf { width: 56px; height: 56px; margin: 0 auto 8px; display: block; }
+  </style>
+</head>
+<body>
+  <header class="bar"><a href="/" aria-label="BLOOME, ir al inicio"><img src="/bloome-logo-blanco.png" alt="BLOOME" /></a></header>
+  <main>
+    <div>
+      <p class="code rise" aria-hidden="true">404</p>
+      <h1 class="rise rise-2">Esta página no floreció</h1>
+      <p class="lead rise rise-2">La dirección que buscás no existe o cambió de lugar. Te llevamos de vuelta.</p>
+      <div class="actions rise rise-3">
+        <a class="btn btn-primary" href="/">Volver al inicio</a>
+        <a class="btn btn-ghost" href="/#tratamientos">Ver tratamientos</a>
+        <a class="btn btn-ghost" href="https://wa.me/5492664884080?text=Hola%20BLOOME%2C%20quisiera%20coordinar%20un%20turno." target="_blank" rel="noopener noreferrer">Escribinos</a>
+      </div>
+    </div>
+  </main>
+  <footer class="foot">© 2026 BLOOME – Centro de estética · República del Líbano 163, San Luis</footer>
+</body>
+</html>

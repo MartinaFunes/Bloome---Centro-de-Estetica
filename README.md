@@ -6,7 +6,7 @@ Sitio web desarrollado con React, TypeScript, Vite y Tailwind CSS 4. El código 
 
 - Node.js 20.19+ o 22.12+ (recomendado: Node.js 22 LTS).
 - Visual Studio Code.
-- Conexión a internet para instalar las dependencias y cargar las fuentes de Google Fonts.
+- Conexión a internet para instalar las dependencias (las fuentes se alojan en el propio sitio).
 
 ## Ejecutar en Visual Studio Code
 
